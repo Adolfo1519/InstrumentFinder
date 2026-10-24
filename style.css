@@ -26,4 +26,52 @@ thead th { position: sticky; top: 0; background: #fff; z-index: 1; }
 th { resize: horizontal; overflow: hidden; }
 #facilities, #wavebands { max-height: 180px; overflow-y: auto; }
 select { max-width: 6rem; }
-@media (max-width: 700px) { aside { width: auto; height: auto; position: static; } }
+/* Mobile-only controls are hidden on desktop */
+#mobile-bar, #show-results-bar { display: none; }
+body.noscroll { overflow: hidden; }
+
+@media (max-width: 700px) {
+  body { display: block; }
+  main { padding: 0.75rem; overflow-x: visible; }
+  h1 { font-size: 1.4rem; margin: 0.25rem 0 0.75rem; }
+
+  /* Bar with Filters button + sort */
+  #mobile-bar { display: flex; gap: 0.75rem; align-items: center;
+                flex-wrap: wrap; margin-bottom: 0.75rem; }
+  #mobile-bar button { padding: 0.6rem 1rem; font-size: 1rem; border-radius: 8px;
+                       border: 1px solid #888; background: #fff; }
+  #sort-wrap { flex: 1; display: flex; align-items: center; gap: 0.5rem; }
+  #sort { flex: 1; max-width: none; }
+
+  /* Filters become a full-screen panel */
+  aside { position: fixed; inset: 0; z-index: 10; width: 100%; height: auto;
+          border: none; transform: translateX(-100%); transition: transform 0.2s;
+          padding-bottom: 0; }
+  aside.open { transform: none; }
+  #show-results-bar { display: block; position: sticky; bottom: 0;
+                      margin: 1rem -1rem 0; padding: 0.75rem 1rem;
+                      background: #f3f4f6; border-top: 1px solid #ccc; }
+  #show-results { width: 100%; padding: 0.8rem; font-size: 1rem; border: none;
+                  border-radius: 8px; background: #2457c5; color: #fff; }
+
+  /* Bigger touch targets; 16px inputs stop iOS from zooming on focus */
+  input, select, button { font-size: 16px; }
+  fieldset label { padding: 0.35rem 0; }
+  input[type=checkbox], input[type=radio] { width: 1.15rem; height: 1.15rem; }
+  input[type=number] { width: 6rem; }
+  #facilities, #wavebands { max-height: 220px; }
+
+  /* Table -> cards */
+  table, thead, tbody, tr, td { display: block; }
+  table { min-width: 0; width: 100%; }
+  thead { display: none; }
+  tr { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+       padding: 0.5rem 0.75rem; margin-bottom: 0.75rem; }
+  td:nth-child(n) { min-width: 0; white-space: normal; border: none;
+                    padding: 0.25rem 0; display: flex; gap: 0.75rem;
+                    justify-content: space-between; text-align: right; }
+  td::before { content: attr(data-label); flex: 0 0 38%; text-align: left;
+               font-weight: 600; color: #555; }
+  td:empty { display: none; }
+  td:nth-child(2) { font-weight: 600; }
+}

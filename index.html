@@ -85,10 +85,28 @@
     </fieldset>
 
     <button id="reset">Reset filters</button>
+    <div id="show-results-bar">
+      <button id="show-results" type="button">Show results</button>
+    </div>
   </aside>
 
   <main>
     <h1>InstrumentFinder</h1>
+    <div id="mobile-bar">
+      <button id="open-filters" type="button">☰ Filters</button>
+      <label id="sort-wrap">Sort
+        <select id="sort">
+          <option value="">Default order</option>
+          <option value="facility:1">Facility A–Z</option>
+          <option value="instrument:1">Instrument A–Z</option>
+          <option value="lamLo:1">Wavelength: short → long</option>
+          <option value="lamLo:-1">Wavelength: long → short</option>
+          <option value="resBest:-1">Spectral res: high → low</option>
+          <option value="spatBest:1">Spatial res: finest first</option>
+          <option value="fovBest:-1">Field of view: largest first</option>
+        </select>
+      </label>
+    </div>
     <p id="count">Loading…</p>
     <table>
       <thead>

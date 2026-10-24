@@ -225,12 +225,12 @@ function getMatches() {
 }
 
 // ---------- Rendering ----------
-function td(text) {
+function td(text, label = "") {
   const el = document.createElement("td");
-  el.textContent = text;     // textContent avoids HTML injection
+  el.textContent = text;
+  if (label) el.dataset.label = label;   // used by the mobile card layout
   return el;
 }
-
 function linkLabel(url) {
   try { return new URL(url).hostname.replace(/^www\./, ""); }
   catch { return "Link"; }
@@ -249,13 +249,13 @@ function render() {
 
   document.getElementById("count").textContent =
     `${out.length} of ${rows.length} entries match`;
-
+  document.getElementById("show-results").textContent = `Show ${out.length} results`;
   const tbody = document.getElementById("results");
   tbody.innerHTML = "";
   for (const r of out) {
     const tr = document.createElement("tr");
 
-  const access = td("");
+  const access = td("", "Access");
   r.accessList.forEach((item, i) => {
     if (i) access.append(", ");
     if (isUrl(item)) {
@@ -269,11 +269,30 @@ function render() {
       access.append(item);        // appended as text, so no HTML injection
     }
   });
-    tr.append(
-      td(r.facility), td(r.instrument), td(r.wavebands.join(", ")),
-      td(r.dWave), td(r.dRes), td(r.dSpat), td(r.dFov),
-      td(r.flags.join(", ")), access
-    );
-    tbody.append(tr);
+  tr.append(
+    td(r.facility, "Facility"), td(r.instrument, "Instrument"),
+    td(r.wavebands.join(", "), "Waveband"),
+    td(r.dWave, "Wavelength"), td(r.dRes, "Spectral res."),
+    td(r.dSpat, "Spatial res."), td(r.dFov, "Field of view"),
+    td(r.flags.join(", "), "Capabilities"), access
+  );
+  tbody.append(tr);
   }
+
+  // ---------- Mobile: filter panel + sort dropdown ----------
+  const panel = document.getElementById("filters");
+  const setPanel = open => {
+    panel.classList.toggle("open", open);
+    document.body.classList.toggle("noscroll", open);
+    if (open) panel.scrollTop = 0;
+  };
+  document.getElementById("open-filters").addEventListener("click", () => setPanel(true));
+  document.getElementById("show-results").addEventListener("click", () => setPanel(false));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") setPanel(false); });
+
+  document.getElementById("sort").addEventListener("change", e => {
+    if (!e.target.value) { sortKey = null; sortDir = 1; }
+    else { const [k, d] = e.target.value.split(":"); sortKey = k; sortDir = +d; }
+    render();
+  });
 }
