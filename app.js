@@ -139,7 +139,7 @@ Papa.parse(DATA_URL, {
     buildFacet("facilities", unique(rows.map(r => r.facility)));
     // If "Access" holds URLs rather than categories, there's nothing to facet on
     buildFacet("access", unique(rows.flatMap(r => r.accessList.filter(a => !isUrl(a)))));
-    buildFacet("filter", unique(rows.flatMap(r => r.filterList)));
+    buildFacet("instfilters", unique(rows.flatMap(r => r.filterList)));
     buildFacet("hemisphere",  unique(rows.flatMap(r => r.hemisphere)));
     render();
   },
@@ -278,24 +278,24 @@ function render() {
       access.append(item);        // appended as text, so no HTML injection
     }
   });
-  const instfilts = td("", "Instrument Filters");
+  const instfilters = td("", "Instrument Filters");
   r.filterList.forEach((item, i) => {
-    if (i) instfilts.append(", ");
+    if (i) instfilters.append(", ");
     if (isUrl(item)) {
       const a = document.createElement("a");
       a.href = item;
       a.textContent = linkLabel(item);
       a.target = "_blank";
       a.rel = "noopener";
-      instfilts.append(a);
+      instfilters.append(a);
     } else {
-      instfilts.append(item);        // appended as text, so no HTML injection
+      instfilters.append(item);        // appended as text, so no HTML injection
     }
   });
   tr.append(
     td(r.facility, "Facility"), td(r.instrument, "Instrument"),
     td(r.hemisphere, "Hemisphere"),
-    td(r.wavebands.join(", "), "Waveband"),instfilts, 
+    td(r.wavebands.join(", "), "Waveband"),instfilters, 
     td(r.dWave, "Wavelength"), td(r.dRes, "Spectral res."),
     td(r.dSpat, "Spatial res."), td(r.dFov, "Field of view"),
     td(r.flags.join(", "), "Capabilities"), access
