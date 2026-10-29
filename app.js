@@ -294,11 +294,11 @@ function render() {
   });
   tr.append(
     td(r.facility, "Facility"), td(r.instrument, "Instrument"),
-    td(r.wavebands.join(", "), "Waveband"),
     td(r.hemisphere, "Hemisphere"),
+    td(r.wavebands.join(", "), "Waveband"),instfilts, 
     td(r.dWave, "Wavelength"), td(r.dRes, "Spectral res."),
     td(r.dSpat, "Spatial res."), td(r.dFov, "Field of view"),
-    td(r.flags.join(", "), "Capabilities"), instfilts, access
+    td(r.flags.join(", "), "Capabilities"), access
   );
   tbody.append(tr);
   }

@@ -15,12 +15,12 @@ th, td { text-align: left; padding: 0.4rem 0.8rem; vertical-align: top;
 /* 2 Instrument */       th:nth-child(2), td:nth-child(2) { min-width: 9rem; }
 /* 8 Hemisphere */       th:nth-child(3), td:nth-child(3) { min-width: 7rem; }
 /* 3 Waveband */         th:nth-child(4), td:nth-child(4) { min-width: 7rem; }
-/* 4 Wavelength */       th:nth-child(5), td:nth-child(5) { min-width: 11rem; white-space: nowrap; }
-/* 5 Spectral res */     th:nth-child(6), td:nth-child(6) { min-width: 9rem;  white-space: nowrap; }
-/* 6 Spatial res */      th:nth-child(7), td:nth-child(7) { min-width: 9rem;  white-space: nowrap; }
-/* 7 FOV */              th:nth-child(8), td:nth-child(8) { min-width: 9rem;  white-space: nowrap; }
-/* 8 Capabilities */     th:nth-child(9), td:nth-child(9) { min-width: 9rem; }
-/* 8 Instrument Filters */          th:nth-child(10), td:nth-child(10) { min-width: 12rem; }
+/* 8 Instrument Filters */ th:nth-child(5), td:nth-child(5) { min-width: 12rem; }
+/* 4 Wavelength */       th:nth-child(6), td:nth-child(6) { min-width: 11rem; white-space: nowrap; }
+/* 5 Spectral res */     th:nth-child(7), td:nth-child(7) { min-width: 9rem;  white-space: nowrap; }
+/* 6 Spatial res */      th:nth-child(8), td:nth-child(8) { min-width: 9rem;  white-space: nowrap; }
+/* 7 FOV */              th:nth-child(9), td:nth-child(9) { min-width: 9rem;  white-space: nowrap; }
+/* 8 Capabilities */     th:nth-child(10), td:nth-child(10) { min-width: 9rem; }
 /* 9 Access */           th:nth-child(11), td:nth-child(11) { min-width: 10rem; }th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #e5e5e5; }
 th[data-key] { cursor: pointer; }
 th[data-key]:hover { background: #eef; }
