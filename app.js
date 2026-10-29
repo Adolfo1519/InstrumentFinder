@@ -14,8 +14,9 @@ const FEATURES = [
 const EXPECTED = [
   "Facility", "Instrument", "Waveband", "Min Wave/Freq", "Max Wave/Freq", "Unit",
   ...FEATURES.map(f => f[0]),
+  "Instrument Filters", "Hemisphere", 
   "Min Spec Res", "Max Spec Res", "Min Spat Res", "Max Spat Res", "Spat Res Unit",
-  "Min FOV", "Max FOV", "FOV Unit", "Access", "Hemisphere", "Filters",
+  "Min FOV", "Max FOV", "FOV Unit", "Access",
 ];
 
 // ---------- Unit handling ----------
@@ -102,8 +103,8 @@ function normalizeRow(r) {
     instrument: g("Instrument"),
     wavebands:  g("Waveband").split(/[;,]/).map(s => s.trim()).filter(Boolean),
     accessList: g("Access").split(";").map(s => s.trim()).filter(Boolean),
-    hemisphere:   g("Hemisphere"),
-    filterList: g("Filters").split(";").map(s => s.trim()).filter(Boolean),
+    hemisphere: g("Hemisphere"),
+    filterList: g("Instrument Filters").split(";").map(s => s.trim()).filter(Boolean),
     flags:      FEATURES.filter(([col]) => toBool(r[col])).map(([, label]) => label),
 
     // numeric values used for filtering/sorting
@@ -119,7 +120,7 @@ function normalizeRow(r) {
     dSpat: fmtRange(sMin, sMax, sUnit),
     dFov:  fmtRange(fMin, fMax, fUnit),
   };
-  row.searchText = [row.facility, row.instrument, g("Waveband"), g("Hemisphere"), g("Filters"), g("Access")].join(" ").toLowerCase();
+  row.searchText = [row.facility, row.instrument, g("Waveband"), g("Hemisphere"), g("Instrument Filters"), g("Access")].join(" ").toLowerCase();
   return row;
 }
 
@@ -277,7 +278,7 @@ function render() {
       access.append(item);        // appended as text, so no HTML injection
     }
   });
-  const instfilts = td("", "Filters");
+  const instfilts = td("", "Instrument Filters");
   r.filterList.forEach((item, i) => {
     if (i) instfilts.append(", ");
     if (isUrl(item)) {
