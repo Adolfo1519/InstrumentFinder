@@ -225,7 +225,7 @@ function getMatches() {
     if (facs.length  && !facs.includes(r.facility)) return false;             // OR within a facet
     if (bands.length && !r.wavebands.some(b => bands.includes(b))) return false;
     if (hemi.length && !r.hemisphere.some(h => hemi.includes(h))) return false;
-    if (hemi.length && !filts.every(f => r.filterList.includes(f))) return false;    
+    if (filts.length && !filts.every(f => r.filterList.includes(f))) return false;    
     if (acc.length && !r.accessList.some(a => acc.includes(a))) return false;
     if (!feats.every(f => r.flags.includes(f))) return false;                 // AND across capabilities
     if (text && !r.searchText.includes(text)) return false;
