@@ -103,7 +103,7 @@ function normalizeRow(r) {
     instrument: g("Instrument"),
     wavebands:  g("Waveband").split(/[;,]/).map(s => s.trim()).filter(Boolean),
     accessList: g("Access").split(";").map(s => s.trim()).filter(Boolean),
-    hemisphere: g("Hemisphere"),
+    hemisphere: g("Hemisphere").split(/[;,]/).map(s => s.trim()).filter(Boolean),
     filterList: g("Instrument Filters").split(";").map(s => s.trim()).filter(Boolean),
     flags:      FEATURES.filter(([col]) => toBool(r[col])).map(([, label]) => label),
 
