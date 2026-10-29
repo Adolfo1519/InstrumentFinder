@@ -139,7 +139,7 @@ Papa.parse(DATA_URL, {
     buildFacet("facilities", unique(rows.map(r => r.facility)));
     // If "Access" holds URLs rather than categories, there's nothing to facet on
     buildFacet("access", unique(rows.flatMap(r => r.accessList.filter(a => !isUrl(a)))));
-    buildFacet("filterList", unique(rows.flatMap(r => r.filterList.filter(a => !isUrl(a)))));
+    buildFacet("filter", unique(rows.flatMap(r => r.filterList)));
     buildFacet("hemisphere",  unique(rows.flatMap(r => r.hemisphere)));
     render();
   },
