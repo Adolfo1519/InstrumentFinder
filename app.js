@@ -15,7 +15,7 @@ const EXPECTED = [
   "Facility", "Instrument", "Waveband", "Min Wave/Freq", "Max Wave/Freq", "Unit",
   ...FEATURES.map(f => f[0]),
   "Min Spec Res", "Max Spec Res", "Min Spat Res", "Max Spat Res", "Spat Res Unit",
-  "Min FOV", "Max FOV", "FOV Unit", "Access",
+  "Min FOV", "Max FOV", "FOV Unit", "Access", "Hemisphere", "Filters",
 ];
 
 // ---------- Unit handling ----------
@@ -102,6 +102,8 @@ function normalizeRow(r) {
     instrument: g("Instrument"),
     wavebands:  g("Waveband").split(/[;,]/).map(s => s.trim()).filter(Boolean),
     accessList: g("Access").split(";").map(s => s.trim()).filter(Boolean),
+    hemisphere:   g("Hemisphere"),
+    filterList: g("Filters").split(";").map(s => s.trim()).filter(Boolean),
     flags:      FEATURES.filter(([col]) => toBool(r[col])).map(([, label]) => label),
 
     // numeric values used for filtering/sorting
@@ -117,7 +119,7 @@ function normalizeRow(r) {
     dSpat: fmtRange(sMin, sMax, sUnit),
     dFov:  fmtRange(fMin, fMax, fUnit),
   };
-  row.searchText = [row.facility, row.instrument, g("Waveband"), g("Access")].join(" ").toLowerCase();
+  row.searchText = [row.facility, row.instrument, g("Waveband"), g("Hemisphere"), g("Filters"), g("Access")].join(" ").toLowerCase();
   return row;
 }
 
@@ -136,6 +138,8 @@ Papa.parse(DATA_URL, {
     buildFacet("facilities", unique(rows.map(r => r.facility)));
     // If "Access" holds URLs rather than categories, there's nothing to facet on
     buildFacet("access", unique(rows.flatMap(r => r.accessList.filter(a => !isUrl(a)))));
+    buildFacet("filterList", unique(rows.flatMap(r => r.filterList.filter(a => !isUrl(a)))));
+    buildFacet("hemisphere",  unique(rows.flatMap(r => r.hemisphere)));
     render();
   },
   error: err => {
@@ -199,6 +203,8 @@ function getMatches() {
   const bands = checked("wavebands");
   const facs  = checked("facilities");
   const acc   = checked("access");
+  const hemi   = checked("hemisphere");
+  const filts   = checked("instfilters");
   const text  = val("search").toLowerCase().trim();
 
   // Note: when a numeric filter is active, rows with missing data for it are excluded.
@@ -217,6 +223,8 @@ function getMatches() {
 
     if (facs.length  && !facs.includes(r.facility)) return false;             // OR within a facet
     if (bands.length && !r.wavebands.some(b => bands.includes(b))) return false;
+    if (hemi.length && !r.hemisphere.some(h => hemi.includes(h))) return false;
+    if (!filts.every(f => r.filterList.includes(f))) return false;    
     if (acc.length && !r.accessList.some(a => acc.includes(a))) return false;
     if (!feats.every(f => r.flags.includes(f))) return false;                 // AND across capabilities
     if (text && !r.searchText.includes(text)) return false;
@@ -269,12 +277,27 @@ function render() {
       access.append(item);        // appended as text, so no HTML injection
     }
   });
+  const instfilts = td("", "Filters");
+  r.filterList.forEach((item, i) => {
+    if (i) instfilts.append(", ");
+    if (isUrl(item)) {
+      const a = document.createElement("a");
+      a.href = item;
+      a.textContent = linkLabel(item);
+      a.target = "_blank";
+      a.rel = "noopener";
+      instfilts.append(a);
+    } else {
+      instfilts.append(item);        // appended as text, so no HTML injection
+    }
+  });
   tr.append(
     td(r.facility, "Facility"), td(r.instrument, "Instrument"),
     td(r.wavebands.join(", "), "Waveband"),
+    td(r.hemisphere, "Hemisphere"),
     td(r.dWave, "Wavelength"), td(r.dRes, "Spectral res."),
     td(r.dSpat, "Spatial res."), td(r.dFov, "Field of view"),
-    td(r.flags.join(", "), "Capabilities"), access
+    td(r.flags.join(", "), "Capabilities"), instfilts, access
   );
   tbody.append(tr);
   }

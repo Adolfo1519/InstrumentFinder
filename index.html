@@ -69,6 +69,16 @@
       <div id="features"></div>
     </fieldset>
 
+    <fieldset id="filter-set">
+      <legend>Filters</legend>
+      <div id="instfilters"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Hemisphere</legend>
+      <div id="hemisphere"></div>
+    </fieldset>
+
     <fieldset>
       <legend>Waveband</legend>
       <div id="wavebands"></div>
@@ -99,11 +109,13 @@
           <option value="">Default order</option>
           <option value="facility:1">Facility A–Z</option>
           <option value="instrument:1">Instrument A–Z</option>
+          <option value="hemisphere:1">Hemisphere A–Z</option>
           <option value="lamLo:1">Wavelength: short → long</option>
           <option value="lamLo:-1">Wavelength: long → short</option>
           <option value="resBest:-1">Spectral res: high → low</option>
           <option value="spatBest:1">Spatial res: finest first</option>
           <option value="fovBest:-1">Field of view: largest first</option>
+          <option value="filter:1">Filters A–Z</option>
         </select>
       </label>
     </div>
@@ -119,6 +131,8 @@
           <th data-key="spatBest">Spatial Resolution</th>
           <th data-key="fovBest">Field of View</th>
           <th>Capabilities</th>
+          <th>Filters</th>
+          <th>Hemisphere</th>
           <th>Access</th>
         </tr>
       </thead>
